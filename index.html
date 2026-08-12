@@ -3,51 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Void Amulet: Demon Catcher Activity</title>
+    <title>Void Amulet: Demonmon</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app-container">
+
         <header class="game-header">
-            <h1><span class="magenta-glow">⛧</span> VOID AMULET <span class="magenta-glow">⛧</span></h1>
+            <div class="header-title">
+                <span class="sigil">⛧</span>
+                <h1>VOID AMULET</h1>
+                <span class="sigil">⛧</span>
+            </div>
+            <div class="header-sub">Demonmon &mdash; Bind. Collect. Ascend.</div>
+
+            <div class="hunter-bar">
+                <span class="hunter-level" id="hunter-level-label">Hunter Lv.1</span>
+                <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+                <span class="xp-label" id="xp-label">0 / 100 XP</span>
+            </div>
+
             <nav class="game-nav">
-                <button id="nav-explore" class="active">Wander the Abyss</button>
-                <button id="nav-collection">Demonic Pact (Collection)</button>
+                <button id="nav-explore"    class="active">⚔ Explore</button>
+                <button id="nav-quests">📜 Quests</button>
+                <button id="nav-collection">👹 Bound</button>
+                <button id="nav-dex">📖 Beast-a-Dex</button>
             </nav>
         </header>
 
+        <!-- EXPLORE -->
         <main id="view-explore" class="view active">
             <div class="encounter-zone">
+
+                <div id="explore-prompt">
+                    <div class="amulet-selector" id="amulet-selector"></div>
+                    <div class="explore-prompt-inner">
+                        <p>The abyss stares back.</p>
+                        <button id="btn-explore" class="action-btn massive-btn primary">Search for Demons</button>
+                        <p id="discord-status" class="status-text"></p>
+                    </div>
+                </div>
+
                 <div id="wild-demon-container" class="hidden">
                     <h2 id="wild-demon-name" class="demon-name"></h2>
                     <p class="demon-class" id="wild-demon-class"></p>
-                    <img id="wild-demon-image" src="" alt="Wild Demon">
+                    <div id="wild-demon-rarity" class="rarity-badge"></div>
+                    <div class="demon-frame">
+                        <div class="img-loading hidden" id="img-loading">Summoning...</div>
+                        <img id="wild-demon-image" src="" alt="Wild Demon">
+                    </div>
                     <div class="action-bar">
-                        <button id="btn-throw-amulet" class="action-btn">Throw Soul Amulet</button>
+                        <button id="btn-throw-amulet" class="action-btn primary">Throw Amulet</button>
                         <button id="btn-flee" class="action-btn secondary">Flee</button>
                     </div>
                     <p id="encounter-log"></p>
+                    <p id="amulet-warning" class="amulet-warning hidden"></p>
                 </div>
-                <div id="explore-prompt">
-                    <p>The shadows writhe. What lurks beyond?</p>
-                    <button id="btn-explore" class="action-btn massive-btn">Search for Demons</button>
-                    <p id="discord-status" class="status-text"></p>
-                </div>
+
             </div>
         </main>
 
+        <!-- QUESTS -->
+        <main id="view-quests" class="view">
+            <div class="section-header">Daily Quests</div>
+            <div class="quest-list" id="quest-list"></div>
+            <p class="quest-reset-info" id="quest-reset-info"></p>
+        </main>
+
+        <!-- COLLECTION -->
         <main id="view-collection" class="view">
-            <h2>Bound Entities</h2>
-            <div id="collection-grid" class="grid">
-                <!-- Bound demons injected here via JS -->
-            </div>
+            <div class="section-header">Bound Entities</div>
+            <div id="collection-grid" class="grid"></div>
             <div id="empty-collection" class="hidden">
-                <p>Your amulet is empty. You have bound no demons yet.</p>
+                <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;margin-top:40px;">
+                    Your amulet is empty.<br>No demons have been bound.
+                </p>
             </div>
         </main>
+
+        <!-- BEAST-A-DEX -->
+        <main id="view-dex" class="view">
+            <div class="section-header">Beast-a-Dex</div>
+            <p class="dex-progress" id="dex-progress"></p>
+            <div class="dex-grid" id="dex-grid"></div>
+        </main>
+
     </div>
 
-    <!-- Script loaded as a module to support ES6 imports for the Discord SDK -->
+    <div class="toast" id="toast"></div>
+
     <script type="module" src="app.js"></script>
 </body>
 </html>
