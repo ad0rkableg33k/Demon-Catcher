@@ -51,6 +51,30 @@ const demonSpecies = [
 let myDemons = JSON.parse(localStorage.getItem('demonCollectionActivity')) || [];
 let currentEncounter = null;
 
+// --- AUDIO SYSTEM ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playDemonicRoar() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.type = 'sawtooth'; // Gritty, harsh waveform
+    osc.frequency.setValueAtTime(60, audioCtx.currentTime); // Start deep
+    osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 1.5); // Plunge into the abyss
+    
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); // Volume
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5); // Fade out
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1.5);
+}
+
+
 // DOM Elements
 const navExplore = document.getElementById('nav-explore');
 const navCollection = document.getElementById('nav-collection');
@@ -135,6 +159,8 @@ function attemptCapture() {
         const catchRoll = Math.random();
         
         if (catchRoll <= currentEncounter.catchRate) {
+            // Success
+            playDemonicRoar(); // <--- ADD THIS LINE HERE
             encounterLog.textContent = `Caught! ${currentEncounter.name} is now bound to you.`;
             saveDemon(currentEncounter);
             setTimeout(resetEncounter, 2500);
