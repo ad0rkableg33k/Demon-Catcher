@@ -10,17 +10,14 @@ let discordSdk;
 async function setupDiscordActivity() {
     const statusText = document.getElementById('discord-status');
     
-    // Check if we are running in an iframe (likely Discord) and have a client ID
     if (window.parent !== window && DISCORD_CLIENT_ID !== 'YOUR_CLIENT_ID_HERE') {
         try {
             statusText.textContent = "Connecting to the Abyss (Discord)...";
             discordSdk = new DiscordSDK(DISCORD_CLIENT_ID);
             
-            // The critical handshake required by Discord Activities
             await discordSdk.ready();
             statusText.textContent = "Bound to Discord successfully.";
             
-            // Optional cleanup of status text
             setTimeout(() => { statusText.textContent = ""; }, 3000);
         } catch (error) {
             console.error("Discord SDK Error:", error);
@@ -50,30 +47,7 @@ const demonSpecies = [
 // State
 let myDemons = JSON.parse(localStorage.getItem('demonCollectionActivity')) || [];
 let currentEncounter = null;
-
-// --- AUDIO SYSTEM ---
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-function playDemonicRoar() {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    osc.type = 'sawtooth'; // Gritty, harsh waveform
-    osc.frequency.setValueAtTime(60, audioCtx.currentTime); // Start deep
-    osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 1.5); // Plunge into the abyss
-    
-    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); // Volume
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5); // Fade out
-    
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    osc.start();
-    osc.stop(audioCtx.currentTime + 1.5);
-}
-
+let audioCtx = null; // Audio initialized locally to prevent browser blocking
 
 // DOM Elements
 const navExplore = document.getElementById('nav-explore');
@@ -94,6 +68,31 @@ const encounterLog = document.getElementById('encounter-log');
 
 const collectionGrid = document.getElementById('collection-grid');
 const emptyCollection = document.getElementById('empty-collection');
+
+// --- AUDIO SYSTEM ---
+function playDemonicRoar() {
+    // Initialize ONLY on user interaction to bypass browser autoplay blocks
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.type = 'sawtooth'; 
+    osc.frequency.setValueAtTime(60, audioCtx.currentTime); 
+    osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 1.5); 
+    
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); 
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5); 
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1.5);
+}
 
 // Navigation Logic
 navExplore.addEventListener('click', () => {
@@ -120,7 +119,6 @@ function triggerEncounter() {
     explorePrompt.classList.add('hidden');
     wildDemonContainer.classList.remove('hidden');
     
-    // Select random demon based on simple weighting
     const roll = Math.random();
     let index = 0;
     if (roll > 0.5) index = Math.floor(Math.random() * 2); 
@@ -159,8 +157,7 @@ function attemptCapture() {
         const catchRoll = Math.random();
         
         if (catchRoll <= currentEncounter.catchRate) {
-            // Success
-            playDemonicRoar(); // <--- ADD THIS LINE HERE
+            playDemonicRoar(); 
             encounterLog.textContent = `Caught! ${currentEncounter.name} is now bound to you.`;
             saveDemon(currentEncounter);
             setTimeout(resetEncounter, 2500);
