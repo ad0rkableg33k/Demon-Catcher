@@ -1,0 +1,227 @@
+:root {
+    --bg-black: #0B0B0B;
+    --bg-charcoal: #1A1A1A;
+    --hot-pink: #FF007F;
+    --magenta: #FF00FF;
+    --text-main: #E0E0E0;
+    --font-stack: 'Courier New', Courier, monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-black);
+    color: var(--text-main);
+    font-family: var(--font-stack);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header (Early-Web/Gothic Vibe) */
+.site-header {
+    background-color: var(--bg-charcoal);
+    border-bottom: 2px solid var(--hot-pink);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+}
+
+.site-header h1 {
+    color: var(--magenta);
+    text-shadow: 0 0 5px var(--magenta);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.currency-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--hot-pink);
+}
+
+/* Main Dashboard Grid */
+.pet-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    flex-grow: 1;
+}
+
+@media (max-width: 900px) {
+    .pet-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 3D Viewport */
+.viewport-container {
+    position: relative;
+    background: var(--bg-charcoal);
+    border: 1px solid var(--magenta);
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+}
+
+#pet-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.pet-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(11, 11, 11, 0.9));
+    z-index: 2;
+    pointer-events: none;
+}
+
+.pet-overlay h2 {
+    color: var(--hot-pink);
+    margin-bottom: 0.2rem;
+}
+
+.level-badge {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.exp-bar-container {
+    width: 100%;
+    height: 10px;
+    background: #333;
+    border: 1px solid var(--magenta);
+}
+
+.exp-bar {
+    height: 100%;
+    background: var(--magenta);
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px var(--magenta);
+}
+
+/* Control Panel */
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stats-card, .actions-card, .quests-card {
+    background: var(--bg-charcoal);
+    border: 1px solid #333;
+    padding: 1.5rem;
+    border-radius: 4px;
+}
+
+.stats-card h3, .actions-card h3, .quests-card h3 {
+    color: var(--hot-pink);
+    border-bottom: 1px dashed #555;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Stats */
+.stat-row {
+    margin-bottom: 1rem;
+}
+
+.stat-row label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.stat-bar {
+    width: 100%;
+    height: 15px;
+    background: #000;
+    border: 1px solid #444;
+}
+
+.stat-fill {
+    height: 100%;
+    background: var(--hot-pink);
+    transition: width 0.5s ease;
+}
+
+/* Buttons */
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+}
+
+.action-btn {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--hot-pink);
+    padding: 0.8rem;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background: var(--hot-pink);
+    color: var(--bg-black);
+    box-shadow: 0 0 10px var(--hot-pink);
+}
+
+.action-btn:disabled {
+    border-color: #555;
+    color: #555;
+    cursor: not-allowed;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Quests */
+.quest-list {
+    list-style: none;
+}
+
+.quest-item {
+    background: #000;
+    border-left: 3px solid var(--magenta);
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.quest-item.completed {
+    border-left-color: #555;
+    color: #555;
+    text-decoration: line-through;
+}
+
+.quest-progress {
+    display: block;
+    color: var(--hot-pink);
+    margin-top: 0.3rem;
+    font-weight: bold;
+}

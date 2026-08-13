@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demon Sanctuary - Pet Care</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Three.js loaded via CDN for vanilla 3D rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <h1>[ DEMON_SANCTUARY ]</h1>
+        <div class="currency-display">
+            <span>Dark Souls: </span>
+            <span id="soul-count">0</span>
+        </div>
+    </header>
+
+    <main class="pet-dashboard">
+        <!-- 3D Viewport -->
+        <section class="viewport-container">
+            <div id="pet-canvas"></div>
+            <div class="pet-overlay">
+                <h2 id="demon-name">Abyssal Spawn</h2>
+                <div class="level-badge">Lvl. <span id="demon-level">1</span> (<span id="demon-stage">Baby</span>)</div>
+                <div class="exp-bar-container">
+                    <div id="exp-fill" class="exp-bar"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls & Stats -->
+        <aside class="control-panel">
+            <div class="stats-card">
+                <h3>Vitals</h3>
+                <div class="stat-row">
+                    <label>Hunger</label>
+                    <div class="stat-bar"><div id="stat-hunger" class="stat-fill" style="width: 100%;"></div></div>
+                </div>
+                <div class="stat-row">
+                    <label>Mood</label>
+                    <div class="stat-bar"><div id="stat-mood" class="stat-fill" style="width: 100%;"></div></div>
+                </div>
+                <div class="stat-row">
+                    <label>Energy</label>
+                    <div class="stat-bar"><div id="stat-energy" class="stat-fill" style="width: 100%;"></div></div>
+                </div>
+            </div>
+
+            <div class="actions-card">
+                <h3>Actions</h3>
+                <div class="button-grid">
+                    <button id="btn-feed" class="action-btn">Feed (10 Souls)</button>
+                    <button id="btn-play" class="action-btn">Play with Demon</button>
+                    <button id="btn-sleep" class="action-btn">Toggle Sleep</button>
+                </div>
+            </div>
+
+            <div class="quests-card">
+                <h3>Active Pacts (Quests)</h3>
+                <ul id="quest-list" class="quest-list">
+                    <!-- Quests injected by JS -->
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
